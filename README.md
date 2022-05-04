@@ -1,5 +1,7 @@
 # f-Telegram
 
+[![wakatime](https://wakatime.com/badge/github/evgfilim1/ftg.svg)](https://wakatime.com/badge/github/evgfilim1/ftg)
+
 Flutter Telegram client powered by tdlib
 
 ## Demo
