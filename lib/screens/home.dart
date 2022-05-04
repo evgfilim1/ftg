@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:ftg/utils.dart';
 
 import './chat.dart';
+import './login.dart';
 import '../models/chat.dart';
 import '../models/message.dart';
 import '../models/user.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -95,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("f-Telegram"),
       ),
       body: Center(
         child: ListView(
@@ -145,6 +144,15 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Imaginary Settings'),
               onTap: () {
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => const LoginScreen()));
               },
             ),
           ],

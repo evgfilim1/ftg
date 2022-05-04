@@ -1,9 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-import './screens/home.dart';
+import 'package:flutter/material.dart';
+import 'package:ftg/screens/home.dart';
+
+import './screens/login.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  Future<bool> isLoggedIn() async {
+    // fake async
+    return Random().nextBool();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +20,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(title: 'f-Telegram'),
+      home: FutureBuilder<bool>(
+        future: isLoggedIn(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data! ? const HomeScreen() : const LoginScreen();
+          } else {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
