@@ -70,35 +70,45 @@ class _ChatScreenState extends State<ChatScreen> {
               reverse: true,
             ),
           ),
-          Row(
-            children: [
-              IconButton(
-                padding: const EdgeInsets.symmetric(),
-                icon: const Icon(Icons.attach_file),
-                onPressed: () {},
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Type a message...',
-                      border: OutlineInputBorder(),
-                    ),
-                    minLines: 1,
-                    maxLines: 5,
-                    onSubmitted: _sendMessage,
-                    autofocus: true,
-                  ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  color: Colors.grey[300]!,
+                  width: 1,
                 ),
               ),
-              IconButton(
-                padding: const EdgeInsets.symmetric(),
-                icon: const Icon(Icons.send),
-                onPressed: () => _sendMessage(_controller.text),
-              ),
-            ],
+            ),
+            child: Row(
+              children: [
+                IconButton(
+                  padding: const EdgeInsets.symmetric(),
+                  icon: const Icon(Icons.attach_file),
+                  onPressed: () {},
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    child: TextField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Type a message...',
+                        border: OutlineInputBorder(),
+                      ),
+                      minLines: 1,
+                      maxLines: 5,
+                      onSubmitted: _sendMessage,
+                      autofocus: true,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  padding: const EdgeInsets.symmetric(),
+                  icon: const Icon(Icons.send),
+                  onPressed: () => _sendMessage(_controller.text),
+                ),
+              ],
+            ),
           ),
         ],
       ),
