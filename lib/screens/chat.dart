@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
 import 'package:ftg/utils.dart';
 import 'package:intl/intl.dart';
 
+import '../components/chat_info_title.dart';
 import '../models/chat.dart';
 import '../models/message.dart';
 import '../models/user.dart';
@@ -52,31 +51,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _random = Random();
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            getChatAvatar(widget.chat),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.chat.title),
-                  Text(
-                    widget.chat is GroupChat
-                        ? "${(widget.chat as GroupChat).members.length} members"
-                        : (_random.nextBool() ? "online" : "last seen just now"),
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        title: ChatInfoHeader(
+          chat: widget.chat,
+          interactive: true,
         ),
       ),
       body: Column(
