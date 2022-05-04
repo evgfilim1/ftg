@@ -113,7 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: _isSelf ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          if (!_isSelf)
+          if (!_isSelf && isGroupChat)
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: _getUserIcon(e.sender),
