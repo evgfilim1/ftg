@@ -137,8 +137,9 @@ class _ChatScreenState extends State<ChatScreen> {
           if (!_isSelf && isGroupChat)
             Text(
               e.sender.name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
+                color: getColorByID(e.sender.id),
               ),
             ),
           Row(
@@ -157,7 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      backGroundColor: _isSelf ? _cs.secondary : _cs.background,
+      backGroundColor: _isSelf ? _cs.background : _cs.surface,
     );
   }
 }
