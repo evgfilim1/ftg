@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import './chat.dart';
 import './login.dart';
+import './settings/menu.dart';
 import '../models/chat.dart';
 import '../models/message.dart';
 import '../models/user.dart';
@@ -141,9 +142,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.settings),
-              title: const Text('Imaginary Settings'),
+              title: const Text('Useless Settings'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsHomeScreen()),
+                );
               },
             ),
             ListTile(
@@ -152,7 +157,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
               },
             ),
           ],
