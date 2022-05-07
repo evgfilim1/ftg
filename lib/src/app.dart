@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:ftg/screens/home.dart';
 
+import './screens/home.dart';
 import './screens/login.dart';
 
 class MyApp extends StatelessWidget {

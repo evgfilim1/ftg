@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
-import 'package:ftg/utils.dart';
 import 'package:intl/intl.dart';
 
 import '../components/chat_info_title.dart';
 import '../models/chat.dart';
 import '../models/message.dart';
 import '../models/user.dart';
+import '../utils.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({

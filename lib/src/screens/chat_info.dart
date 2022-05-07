@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ftg/components/chat_info_title.dart';
-import 'package:ftg/utils.dart';
 
+import '../components/chat_info_title.dart';
 import '../models/chat.dart';
+import '../utils.dart';
 
 class ChatInfoScreen extends StatefulWidget {
   const ChatInfoScreen({Key? key, required this.chat}) : super(key: key);

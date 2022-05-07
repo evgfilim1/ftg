@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:ftg/screens/chat_info.dart';
 
 import '../models/chat.dart';
+import '../screens/chat_info.dart';
 import '../utils.dart';
 
 class ChatInfoHeader extends StatelessWidget {

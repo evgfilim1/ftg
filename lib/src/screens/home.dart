@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:ftg/utils.dart';
 
 import './chat.dart';
 import './login.dart';
 import '../models/chat.dart';
 import '../models/message.dart';
 import '../models/user.dart';
+import '../utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
