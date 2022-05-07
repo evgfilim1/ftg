@@ -19,6 +19,19 @@ class MyApp extends StatelessWidget {
       title: 'f-Telegram',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+        ),
+      ),
+      darkTheme: ThemeData(
+        primarySwatch: Colors.blue,
+        toggleableActiveColor: Colors.blue[600],
+        colorScheme: ColorScheme.fromSwatch(
+          primarySwatch: Colors.blue,
+          brightness: Brightness.dark,
+        ).copyWith(
+          secondary: Colors.blue[700],
+        ),
       ),
       home: FutureBuilder<bool>(
         future: isLoggedIn(),

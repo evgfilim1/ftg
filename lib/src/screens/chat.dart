@@ -51,6 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: ChatInfoHeader(
@@ -74,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  color: Colors.grey[300]!,
+                  color: theme.secondaryHeaderColor,
                   width: 1,
                 ),
               ),
