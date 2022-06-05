@@ -30,7 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
   english_words: ^4.0.0  # for fake data
-  flutter_chat_bubble: ^2.0.0
   intl: ^0.17.0
 
 dev_dependencies:

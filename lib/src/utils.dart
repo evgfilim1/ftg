@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './models/chat.dart';
 import './models/user.dart';
+import 'models/message.dart';
 
 const _colors = [
   Color(0xffe17076),
@@ -31,3 +32,7 @@ Widget getUserAvatar(User user) => CircleAvatar(
         style: const TextStyle(color: Colors.white),
       ),
     );
+
+extension MessageExtension on Message {
+  bool get outgoing => sender == User.me;
+}

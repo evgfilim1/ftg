@@ -62,13 +62,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_chat_bubble:
-    dependency: "direct main"
-    description:
-      name: flutter_chat_bubble
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -179,4 +172,3 @@ packages:
     version: "2.1.2"
 sdks:
   dart: ">=2.17.0 <3.0.0"
-  flutter: ">=1.12.0"
