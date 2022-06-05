@@ -46,45 +46,43 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   static Chat _generateChat() {
-    final _random = Random();
-    final _baseDate = DateTime.now().subtract(const Duration(days: 1));
-    if (_random.nextBool()) {
-      final _members = List<User>.generate(
-        _random.nextInt(2047) + 1,
+    final random = Random();
+    final baseDate = DateTime.now().subtract(const Duration(days: 1));
+    if (random.nextBool()) {
+      final members = List<User>.generate(
+        random.nextInt(2047) + 1,
         (i) => User(
-          id: _random.nextInt(1 << 16),
+          id: random.nextInt(1 << 16),
           name: generateWordPairs().first.asPascalCase,
         ),
       );
       return GroupChat(
-        id: _random.nextInt(1 << 32),
+        id: random.nextInt(1 << 32),
         title: generateWordPairs().first.join(' '),
         messages: List<Message>.generate(
-          _random.nextInt(20) + 5,
+          random.nextInt(20) + 5,
           (i) => Message(
-            text:
-                generateWordPairs().take(_random.nextInt(3) + 1).map((e) => e.join(' ')).join(' '),
-            date: _baseDate.add(Duration(minutes: i)),
-            sender: _random.nextInt(3) == 0 ? User.me : _members[_random.nextInt(_members.length)],
+            text: generateWordPairs().take(random.nextInt(3) + 1).map((e) => e.join(' ')).join(' '),
+            date: baseDate.add(Duration(minutes: i)),
+            sender: random.nextInt(3) == 0 ? User.me : members[random.nextInt(members.length)],
           ),
         ),
-        members: _members,
+        members: members,
       );
     } else {
-      final _other = User(
-        id: _random.nextInt(1 << 16),
+      final other = User(
+        id: random.nextInt(1 << 16),
         name: generateWordPairs().first.asPascalCase,
       );
       return PrivateChat(
-        id: _other.id,
-        title: _other.name,
+        id: other.id,
+        title: other.name,
         messages: List<Message>.generate(
-          _random.nextInt(14) + 1,
+          random.nextInt(14) + 1,
           (i) => Message(
-            text:
-                generateWordPairs().take(_random.nextInt(3) + 1).map((e) => e.join(' ')).join(' '),
-            date: _baseDate.add(Duration(minutes: i)),
-            sender: _random.nextBool() ? User.me : _other,
+            text: generateWordPairs().take(random.nextInt(3) + 1).map((e) => e.join(' ')).join(' '),
+            date: baseDate.add(Duration(minutes: i)),
+            sender: random.nextBool() ? User.me : other,
           ),
         ),
       );
