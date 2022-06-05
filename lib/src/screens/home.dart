@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 import './chat.dart';
 import './login.dart';
 import './settings/menu.dart';
+import '../components/chat_list.dart';
+import '../components/search_chat_field.dart';
 import '../models/chat.dart';
 import '../models/message.dart';
 import '../models/user.dart';
-import '../utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -124,56 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Stack(
           children: [
-            ListView(
-              padding: const EdgeInsets.only(top: 60),
-              children: _displayChats
-                  .map((e) => ListTile(
-                        leading: getChatAvatar(e),
-                        title: Text(e.title),
-                        subtitle: Text(e.messages.last.text),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatScreen(chat: e),
-                            ),
-                          );
-                        },
-                      ))
-                  .toList(),
-            ),
-            Positioned(
-              top: 8,
-              left: 8,
-              right: 8,
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    padding: const EdgeInsets.all(6),
-                    splashRadius: 16,
-                    icon: const CircleAvatar(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.green,
-                      child: Icon(Icons.account_circle),
-                    ),
-                    onPressed: () {
-                      _scaffold.currentState!.openDrawer();
-                    },
-                  ),
-                  filled: true,
-                  fillColor: Theme.of(context).cardColor,
-                  isDense: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: "Search",
-                ),
-                textInputAction: TextInputAction.search,
-              ),
-            ),
+            ChatList(chats: _displayChats),
+            SearchChatField(controller: _searchController, scaffoldKey: _scaffold),
           ],
         ),
       ),
