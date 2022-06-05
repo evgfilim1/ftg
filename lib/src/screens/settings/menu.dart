@@ -4,7 +4,7 @@ import './theme.dart';
 import '../../components/settings_tiles.dart';
 
 class SettingsHomeScreen extends StatelessWidget {
-  const SettingsHomeScreen({Key? key}) : super(key: key);
+  const SettingsHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

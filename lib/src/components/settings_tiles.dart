@@ -10,7 +10,7 @@ class SettingsTile extends StatelessWidget {
   final VoidCallback? onLongPress;
 
   const SettingsTile({
-    Key? key,
+    super.key,
     this.icon,
     required this.title,
     this.subtitle,
@@ -18,7 +18,7 @@ class SettingsTile extends StatelessWidget {
     this.enabled = true,
     required this.onTap,
     this.onLongPress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,20 +42,15 @@ class SettingsTile extends StatelessWidget {
 
 class SettingsSwitchTile extends SettingsTile {
   SettingsSwitchTile({
-    Key? key,
-    IconData? icon,
-    required String title,
-    String? subtitle,
+    super.key,
+    super.icon,
+    required super.title,
+    super.subtitle,
     required bool value,
-    bool enabled = true,
+    super.enabled = true,
     required ValueChanged<bool> onTap,
   }) : super(
-          key: key,
-          icon: icon,
-          title: title,
-          subtitle: subtitle,
           trailing: Switch.adaptive(value: value, onChanged: onTap),
-          enabled: enabled,
           onTap: () => onTap(!value),
         );
 }
@@ -63,20 +58,14 @@ class SettingsSwitchTile extends SettingsTile {
 class SettingsDialogTile extends SettingsTile {
   SettingsDialogTile({
     required BuildContext context,
-    Key? key,
-    IconData? icon,
-    required String title,
-    String? subtitle,
-    Widget? trailing,
-    bool enabled = true,
+    super.key,
+    super.icon,
+    required super.title,
+    super.subtitle,
+    super.trailing,
+    super.enabled = true,
     required List<SettingsDialogOption> options,
   }) : super(
-          key: key,
-          icon: icon,
-          title: title,
-          subtitle: subtitle,
-          trailing: trailing,
-          enabled: enabled,
           onTap: () => showDialog(
             context: context,
             builder: (context) => SimpleDialog(
@@ -105,7 +94,11 @@ class SettingsDialogOption extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
 
-  const SettingsDialogOption({Key? key, required this.text, required this.onTap}) : super(key: key);
+  const SettingsDialogOption({
+    super.key,
+    required this.text,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -122,22 +115,17 @@ class SettingsDialogOption extends StatelessWidget {
 class SettingsAboutTile extends SettingsTile {
   SettingsAboutTile({
     required BuildContext context,
-    Key? key,
-    IconData? icon,
-    required String title,
-    String? subtitle,
-    bool enabled = true,
+    super.key,
+    super.icon,
+    required super.title,
+    super.subtitle,
+    super.enabled = true,
     String? appName,
     String? appVersion,
     Widget? appIcon,
     List<Widget>? children,
-    VoidCallback? onLongPress,
+    super.onLongPress,
   }) : super(
-          key: key,
-          icon: icon,
-          title: title,
-          subtitle: subtitle,
-          enabled: enabled,
           onTap: () => showAboutDialog(
             context: context,
             applicationName: appName,
@@ -145,6 +133,5 @@ class SettingsAboutTile extends SettingsTile {
             applicationIcon: appIcon,
             children: children,
           ),
-          onLongPress: onLongPress,
         );
 }

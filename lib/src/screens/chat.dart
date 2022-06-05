@@ -11,12 +11,12 @@ import '../models/user.dart';
 import '../utils.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({
-    Key? key,
-    required this.chat,
-  }) : super(key: key);
-
   final Chat chat;
+
+  const ChatScreen({
+    super.key,
+    required this.chat,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -63,12 +63,12 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           Expanded(
             child: SingleChildScrollView(
+              reverse: true,
               child: Column(
                 children: widget.chat.messages
                     .map((e) => _buildMessageWidget(e, context, widget.chat is GroupChat))
                     .toList(),
               ),
-              reverse: true,
             ),
           ),
           DecoratedBox(
@@ -117,14 +117,14 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageWidget(Message e, BuildContext context, bool isGroupChat) {
-    final _isSelf = e.sender == User.me;
+    final isSelf = e.sender == User.me;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: _isSelf ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isSelf ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          if (!_isSelf && isGroupChat)
+          if (!isSelf && isGroupChat)
             Padding(
               padding: const EdgeInsets.only(left: 8),
               child: _getUserIcon(e.sender),
@@ -136,16 +136,17 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildChatBubble(Message e, BuildContext context, bool isGroupChat) {
-    final _isSelf = e.sender == User.me;
-    final _cs = Theme.of(context).colorScheme;
+    final isSelf = e.sender == User.me;
+    final cs = Theme.of(context).colorScheme;
     return ChatBubble(
       clipper: ChatBubbleClipper1(
-        type: _isSelf ? BubbleType.sendBubble : BubbleType.receiverBubble,
+        type: isSelf ? BubbleType.sendBubble : BubbleType.receiverBubble,
       ),
+      backGroundColor: isSelf ? cs.background : cs.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!_isSelf && isGroupChat)
+          if (!isSelf && isGroupChat)
             Text(
               e.sender.name,
               style: TextStyle(
@@ -154,6 +155,8 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(e.text),
               const SizedBox(width: 8),
@@ -164,12 +167,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
             ],
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
           ),
         ],
       ),
-      backGroundColor: _isSelf ? _cs.background : _cs.surface,
     );
   }
 }

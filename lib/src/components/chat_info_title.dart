@@ -11,16 +11,20 @@ class ChatInfoHeader extends StatelessWidget {
   final bool interactive;
 
   const ChatInfoHeader({
-    Key? key,
+    super.key,
     required this.chat,
     required this.interactive,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final _random = Random();
+    final random = Random();
 
     return InkWell(
+      onTap: interactive
+          ? () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ChatInfoScreen(chat: chat)))
+          : null,
       child: Row(
         children: [
           getChatAvatar(chat),
@@ -33,7 +37,7 @@ class ChatInfoHeader extends StatelessWidget {
                 Text(
                   chat is GroupChat
                       ? "${(chat as GroupChat).members.length} members"
-                      : (_random.nextBool() ? "online" : "last seen just now"),
+                      : (random.nextBool() ? "online" : "last seen just now"),
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.normal,
@@ -44,10 +48,6 @@ class ChatInfoHeader extends StatelessWidget {
           ),
         ],
       ),
-      onTap: interactive
-          ? () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ChatInfoScreen(chat: chat)))
-          : null,
     );
   }
 }

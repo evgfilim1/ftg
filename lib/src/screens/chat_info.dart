@@ -5,9 +5,12 @@ import '../models/chat.dart';
 import '../utils.dart';
 
 class ChatInfoScreen extends StatefulWidget {
-  const ChatInfoScreen({Key? key, required this.chat}) : super(key: key);
-
   final Chat chat;
+
+  const ChatInfoScreen({
+    super.key,
+    required this.chat,
+  });
 
   @override
   State<ChatInfoScreen> createState() => _ChatInfoScreenState();
@@ -31,9 +34,9 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
                         leading: getUserAvatar(e),
                         title: Text(e.name),
                         onTap: () {
-                          final _messenger = ScaffoldMessenger.of(context);
-                          _messenger.clearSnackBars();
-                          _messenger.showSnackBar(SnackBar(
+                          final messenger = ScaffoldMessenger.of(context);
+                          messenger.clearSnackBars();
+                          messenger.showSnackBar(SnackBar(
                             content: Text("Clicked on ${e.name} (${e.id})"),
                             duration: const Duration(seconds: 1),
                           ));

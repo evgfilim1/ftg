@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../components/settings_tiles.dart';
 
 class ThemeSettingsScreen extends StatefulWidget {
-  const ThemeSettingsScreen({Key? key}) : super(key: key);
+  const ThemeSettingsScreen({super.key});
 
   @override
   State<ThemeSettingsScreen> createState() => _ThemeSettingsScreenState();
