@@ -21,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _chats = List<Chat>.generate(4, (i) => _generateChat());
   static final _baseDate = DateTime.now().subtract(const Duration(days: 1));
+  final _scaffold = GlobalKey<ScaffoldState>();
 
   void _write() {
     setState(() {
@@ -92,75 +93,113 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("f-Telegram"),
-      ),
+      key: _scaffold,
       body: Center(
-        child: ListView(
-          children: _chats
-              .map((e) => ListTile(
-                    leading: getChatAvatar(e),
-                    title: Text(e.title),
-                    subtitle: Text(e.messages.last.text),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatScreen(chat: e),
-                        ),
-                      );
+        child: Stack(
+          children: [
+            ListView(
+              padding: const EdgeInsets.only(top: 60),
+              children: _chats
+                  .map((e) => ListTile(
+                        leading: getChatAvatar(e),
+                        title: Text(e.title),
+                        subtitle: Text(e.messages.last.text),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatScreen(chat: e),
+                            ),
+                          );
+                        },
+                      ))
+                  .toList(),
+            ),
+            Positioned(
+              top: 8,
+              left: 8,
+              right: 8,
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    padding: const EdgeInsets.all(6),
+                    splashRadius: 16,
+                    icon: const CircleAvatar(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.green,
+                      child: Icon(Icons.account_circle),
+                    ),
+                    onPressed: () {
+                      _scaffold.currentState!.openDrawer();
                     },
-                  ))
-              .toList(),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            const DrawerHeader(
-              child: Center(
-                child: Text("Let's imagine this is a header"),
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.bookmark),
-              title: const Text('Saved Messages+'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatScreen(chat: savedMessages),
                   ),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Useless Settings'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SettingsHomeScreen()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
-              },
+                  filled: true,
+                  fillColor: Theme.of(context).cardColor,
+                  isDense: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(24),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintText: 'Search',
+                ),
+                textInputAction: TextInputAction.search,
+              ),
             ),
           ],
+        ),
+      ),
+      drawer: Padding(
+        padding: const EdgeInsets.only(left: 8, right: 8, top: 60, bottom: 8),
+        child: Drawer(
+          width: MediaQuery.of(context).size.width,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(48),
+          ),
+          child: ListView(
+            children: <Widget>[
+              const DrawerHeader(
+                child: Center(
+                  child: Text("f-Telegram", style: TextStyle(fontSize: 24)),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.bookmark),
+                title: const Text('Saved Messages+'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatScreen(chat: savedMessages),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Useless Settings'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SettingsHomeScreen()),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
