@@ -22,11 +22,24 @@ class _HomeScreenState extends State<HomeScreen> {
   final _chats = List<Chat>.generate(4, (i) => _generateChat());
   static final _baseDate = DateTime.now().subtract(const Duration(days: 1));
   final _scaffold = GlobalKey<ScaffoldState>();
+  final _displayChats = <Chat>[];
+  final _searchController = TextEditingController();
 
   void _write() {
     setState(() {
-      _chats.add(_generateChat());
+      final newChat = _generateChat();
+      final query = _searchController.text.toLowerCase();
+      _chats.add(newChat);
+      if (query.isEmpty || newChat.title.toLowerCase().contains(query)) {
+        _displayChats.add(newChat);
+      }
     });
+  }
+
+  void _performSearch() {
+    final query = _searchController.text.toLowerCase();
+    _displayChats.clear();
+    _displayChats.addAll(_chats.where((chat) => chat.title.toLowerCase().contains(query)));
   }
 
   static final savedMessages = PrivateChat(
@@ -91,6 +104,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _chats.add(savedMessages);
+    _displayChats.addAll(_chats);
+    _searchController.addListener(() => setState(() => _performSearch()));
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffold,
@@ -99,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             ListView(
               padding: const EdgeInsets.only(top: 60),
-              children: _chats
+              children: _displayChats
                   .map((e) => ListTile(
                         leading: getChatAvatar(e),
                         title: Text(e.title),
@@ -120,6 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               left: 8,
               right: 8,
               child: TextField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: IconButton(
@@ -141,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(24),
                     borderSide: BorderSide.none,
                   ),
-                  hintText: 'Search',
+                  hintText: "Search",
                 ),
                 textInputAction: TextInputAction.search,
               ),
@@ -165,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.bookmark),
-                title: const Text('Saved Messages+'),
+                title: const Text("Saved Messages+"),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -178,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.settings),
-                title: const Text('Useless Settings'),
+                title: const Text("Useless Settings"),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.push(
@@ -189,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
+                title: const Text("Logout"),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushReplacement(
@@ -204,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _write,
-        tooltip: 'Write a message',
+        tooltip: "Write a message",
         child: const Icon(Icons.edit),
       ),
     );
