@@ -50,21 +50,21 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
+            child: ListView.builder(
               reverse: true,
-              child: Column(
-                children: widget.chat.messages
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                          child: ChatMessageBubble(
-                            message: e,
-                            status: ChatMessageStatus
-                                .values[Random().nextInt(ChatMessageStatus.values.length)],
-                            showSender: widget.chat is GroupChat,
-                          ),
-                        ))
-                    .toList(),
-              ),
+              itemCount: widget.chat.messages.length,
+              itemBuilder: (context, i) {
+                final currentMessage = widget.chat.messages[widget.chat.messages.length - i - 1];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  child: ChatMessageBubble(
+                    message: currentMessage,
+                    status:
+                        ChatMessageStatus.values[Random().nextInt(ChatMessageStatus.values.length)],
+                    showSender: widget.chat is GroupChat,
+                  ),
+                );
+              },
             ),
           ),
           DecoratedBox(

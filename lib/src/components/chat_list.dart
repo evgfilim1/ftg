@@ -14,9 +14,13 @@ class ChatList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return ListView.builder(
       padding: const EdgeInsets.only(top: 60),
-      children: chats.map((e) => ChatListTile(chat: e)).toList(growable: false),
+      itemCount: chats.length,
+      itemBuilder: (context, i) {
+        final currentChat = chats[i];
+        return ChatListTile(chat: currentChat);
+      },
     );
   }
 }

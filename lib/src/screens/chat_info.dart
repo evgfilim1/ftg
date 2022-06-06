@@ -27,22 +27,23 @@ class _ChatInfoScreenState extends State<ChatInfoScreen> {
         ),
       ),
       body: widget.chat is GroupChat
-          ? ListView(
-              children: (widget.chat as GroupChat)
-                  .members
-                  .map((e) => ListTile(
-                        leading: getUserAvatar(e),
-                        title: Text(e.name),
-                        onTap: () {
-                          final messenger = ScaffoldMessenger.of(context);
-                          messenger.clearSnackBars();
-                          messenger.showSnackBar(SnackBar(
-                            content: Text("Clicked on ${e.name} (${e.id})"),
-                            duration: const Duration(seconds: 1),
-                          ));
-                        },
-                      ))
-                  .toList(),
+          ? ListView.builder(
+              itemCount: (widget.chat as GroupChat).members.length,
+              itemBuilder: (context, i) {
+                final currentMember = (widget.chat as GroupChat).members[i];
+                return ListTile(
+                  leading: getUserAvatar(currentMember),
+                  title: Text(currentMember.name),
+                  onTap: () {
+                    final messenger = ScaffoldMessenger.of(context);
+                    messenger.clearSnackBars();
+                    messenger.showSnackBar(SnackBar(
+                      content: Text("Clicked on ${currentMember.name} (${currentMember.id})"),
+                      duration: const Duration(seconds: 1),
+                    ));
+                  },
+                );
+              },
             )
           : ListView(
               children: [
