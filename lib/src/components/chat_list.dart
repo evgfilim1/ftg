@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../models/chat.dart';
 import '../screens/chat.dart';
@@ -39,6 +40,10 @@ class ChatListTile extends StatelessWidget {
       leading: getChatAvatar(chat),
       title: Text(chat.title),
       subtitle: Text(chat.messages.last.text),
+      trailing: Text(
+        DateFormat.Hm().format(chat.messages.last.date),
+        style: Theme.of(context).textTheme.caption,
+      ),
       onTap: () {
         Navigator.push(
           context,
