@@ -37,7 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void _performSearch() {
     final query = _searchController.text.toLowerCase();
     _displayChats.clear();
-    _displayChats.addAll(_chats.where((chat) => chat.title.toLowerCase().contains(query)));
+    if (query.isNotEmpty) {
+      _displayChats.addAll(_chats.where((chat) => chat.title.toLowerCase().contains(query)));
+    } else {
+      _displayChats.addAll(_chats);
+    }
     _displayChats.sort((a, b) => b.messages.last.date.compareTo(a.messages.last.date));
   }
 
@@ -106,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _chats.add(savedMessages);
-    _displayChats.addAll(_chats);
+    _performSearch();
     _searchController.addListener(() => setState(() => _performSearch()));
   }
 
