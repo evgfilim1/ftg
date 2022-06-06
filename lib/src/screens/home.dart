@@ -29,11 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void _write() {
     setState(() {
       final newChat = _generateChat();
-      final query = _searchController.text.toLowerCase();
       _chats.add(newChat);
-      if (query.isEmpty || newChat.title.toLowerCase().contains(query)) {
-        _displayChats.add(newChat);
-      }
+      _performSearch();
     });
   }
 
@@ -41,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final query = _searchController.text.toLowerCase();
     _displayChats.clear();
     _displayChats.addAll(_chats.where((chat) => chat.title.toLowerCase().contains(query)));
+    _displayChats.sort((a, b) => b.messages.last.date.compareTo(a.messages.last.date));
   }
 
   static final savedMessages = PrivateChat(
