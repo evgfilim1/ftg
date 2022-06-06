@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     title: 'Saved Messages',
     messages: List<Message>.generate(
       25,
-      (i) => Message(
+      (i) => TextMessage(
         text: generateWordPairs().take(Random().nextInt(3) + 1).map((e) => e.join(' ')).join(' '),
         date: _baseDate.add(Duration(minutes: i)),
         sender: User.me,
@@ -78,11 +78,25 @@ class _HomeScreenState extends State<HomeScreen> {
         title: generateWordPairs().first.join(' '),
         messages: List<Message>.generate(
           random.nextInt(20) + 5,
-          (i) => Message(
-            text: generateWordPairs().take(random.nextInt(3) + 1).map((e) => e.join(' ')).join(' '),
-            date: baseDate.add(Duration(minutes: i)),
-            sender: random.nextInt(3) == 0 ? User.me : members[random.nextInt(members.length)],
-          ),
+          (i) {
+            final date = baseDate.add(Duration(minutes: i));
+            final sender =
+                random.nextInt(3) == 0 ? User.me : members[random.nextInt(members.length)];
+            return random.nextBool()
+                ? TextMessage(
+                    text: generateWordPairs()
+                        .take(random.nextInt(3) + 1)
+                        .map((e) => e.join(' '))
+                        .join(' '),
+                    date: date,
+                    sender: sender,
+                  )
+                : PhotoMessage(
+                    date: date,
+                    sender: sender,
+                    photo: "https://picsum.photos/seed/${random.nextInt(2048)}/512?random=$i",
+                  );
+          },
         ),
         members: members,
       );
@@ -96,11 +110,24 @@ class _HomeScreenState extends State<HomeScreen> {
         title: other.name,
         messages: List<Message>.generate(
           random.nextInt(14) + 1,
-          (i) => Message(
-            text: generateWordPairs().take(random.nextInt(3) + 1).map((e) => e.join(' ')).join(' '),
-            date: baseDate.add(Duration(minutes: i)),
-            sender: random.nextBool() ? User.me : other,
-          ),
+          (i) {
+            final date = baseDate.add(Duration(minutes: i));
+            final sender = random.nextBool() ? User.me : other;
+            return random.nextBool()
+                ? TextMessage(
+                    text: generateWordPairs()
+                        .take(random.nextInt(3) + 1)
+                        .map((e) => e.join(' '))
+                        .join(' '),
+                    date: date,
+                    sender: sender,
+                  )
+                : PhotoMessage(
+                    date: date,
+                    sender: sender,
+                    photo: "https://picsum.photos/seed/${random.nextInt(2048)}/512?random=$i",
+                  );
+          },
         ),
       );
     }

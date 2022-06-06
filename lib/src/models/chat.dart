@@ -9,6 +9,12 @@ enum ChatType {
 }
 
 abstract class Chat {
+  final int id;
+  final String title;
+  final ChatType type;
+  final List<Message> messages;
+  final Widget? avatar;
+
   const Chat({
     required this.id,
     required this.title,
@@ -17,14 +23,8 @@ abstract class Chat {
     this.avatar,
   });
 
-  final int id;
-  final String title;
-  final ChatType type;
-  final List<Message> messages;
-  final Widget? avatar;
-
   void sendMessage(String text) {
-    final message = Message(
+    final message = TextMessage(
       text: text,
       date: DateTime.now(),
       sender: User.me,
@@ -56,6 +56,8 @@ class PrivateChat extends Chat {
 }
 
 class GroupChat extends Chat {
+  final List<User> members;
+
   const GroupChat({
     required int id,
     required String title,
@@ -69,6 +71,4 @@ class GroupChat extends Chat {
           messages: messages,
           avatar: avatar,
         );
-
-  final List<User> members;
 }

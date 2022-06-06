@@ -74,7 +74,49 @@ class MessageBubble extends StatelessWidget {
         statusIcon = Icons.error;
         break;
     }
-    final text = "${message.text} ";
+    final Widget content;
+    if (message is TextMessage) {
+      final text = "${(message as TextMessage).text} ";
+      content = Text.rich(
+        TextSpan(
+          children: <InlineSpan>[
+            TextSpan(
+              text: text,
+            ),
+            TextSpan(
+              text: text,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: text,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
+            TextSpan(
+              text: text,
+              style: const TextStyle(fontFamily: "monospace"),
+            ),
+          ],
+        ),
+        style: TextStyle(
+          color: message.outgoing ? Colors.white : Colors.black,
+        ),
+        maxLines: null,
+      );
+    } else if (message is PhotoMessage) {
+      final photoMessage = message as PhotoMessage;
+      content = Image.network(
+        photoMessage.photo,
+        loadingBuilder: (context, child, progress) {
+          return Stack(
+            alignment: AlignmentDirectional.center,
+            children: [const Center(child: CircularProgressIndicator()), child],
+          );
+        },
+        errorBuilder: (context, _, __) => const Center(child: Icon(Icons.error)),
+      );
+    } else {
+      throw UnsupportedError("Unsupported type of message");
+    }
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -84,79 +126,82 @@ class MessageBubble extends StatelessWidget {
           color: message.outgoing ? Colors.blue : Colors.grey[200],
           borderRadius: BorderRadius.circular(16),
         ),
-        // I hope this is acceptable way to do this...
-        child: Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: showSender ? 24 : 8, bottom: 20, left: 12, right: 12),
-              child: Text.rich(
-                TextSpan(
-                  children: <InlineSpan>[
-                    TextSpan(
-                      text: text,
-                    ),
-                    TextSpan(
-                      text: text,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(
-                      text: text,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    TextSpan(
-                      text: text,
-                      style: const TextStyle(fontFamily: "monospace"),
-                    ),
-                  ],
-                ),
-                style: TextStyle(
-                  color: message.outgoing ? Colors.white : Colors.black,
-                ),
-                maxLines: null,
-              ),
-            ),
-            if (showSender)
-              Positioned(
-                top: 6,
-                left: 12,
-                child: Text(
-                  message.sender.name,
-                  style: TextStyle(
-                    color: getColorByID(message.sender.id),
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            Positioned(
-              bottom: 4,
-              right: 8,
-              child: Row(
-                children: [
-                  Text(
-                    DateFormat.Hm().format(message.date),
-                    style: TextStyle(
-                      color: (message.outgoing ? Colors.white : Colors.black).withOpacity(0.8),
-                      fontSize: 9,
-                    ),
-                    maxLines: 1,
-                    textAlign: TextAlign.right,
-                  ),
-                  if (message.outgoing)
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: Icon(
-                        statusIcon,
-                        color: status != ChatMessageStatus.error ? Colors.white : Colors.redAccent,
-                        size: 12,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
+        child: _MessageContainer(
+          showSender: showSender,
+          message: message,
+          statusIcon: statusIcon,
+          status: status,
+          child: content,
         ),
       ),
+    );
+  }
+}
+
+class _MessageContainer extends StatelessWidget {
+  final bool showSender;
+  final Message message;
+  final IconData statusIcon;
+  final ChatMessageStatus? status;
+  final Widget child;
+
+  const _MessageContainer({
+    required this.showSender,
+    required this.message,
+    required this.statusIcon,
+    required this.status,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // I hope this is acceptable way to do this...
+    return Stack(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: showSender ? 24 : 8, bottom: 20, left: 12, right: 12),
+          child: child,
+        ),
+        if (showSender)
+          Positioned(
+            top: 6,
+            left: 12,
+            child: Text(
+              message.sender.name,
+              style: TextStyle(
+                color: getColorByID(message.sender.id),
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        Positioned(
+          bottom: 4,
+          right: 8,
+          child: Row(
+            children: [
+              Text(
+                DateFormat.Hm().format(message.date),
+                style: TextStyle(
+                  color: (message.outgoing ? Colors.white : Colors.black).withOpacity(0.8),
+                  fontSize: 9,
+                ),
+                maxLines: 1,
+                textAlign: TextAlign.right,
+              ),
+              if (message.outgoing)
+                Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: Icon(
+                    statusIcon,
+                    color: status != ChatMessageStatus.error ? Colors.white : Colors.redAccent,
+                    size: 12,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

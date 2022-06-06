@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/chat.dart';
+import '../models/message.dart';
 import '../screens/chat.dart';
 import '../utils.dart';
 
@@ -36,10 +37,11 @@ class ChatListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lastMessage = chat.messages.last;
     return ListTile(
       leading: getChatAvatar(chat),
       title: Text(chat.title),
-      subtitle: Text(chat.messages.last.text),
+      subtitle: Text(lastMessage is TextMessage ? lastMessage.text : "<Photo>"),
       trailing: Text(
         DateFormat.Hm().format(chat.messages.last.date),
         style: Theme.of(context).textTheme.caption,
