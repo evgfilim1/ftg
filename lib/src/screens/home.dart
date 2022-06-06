@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffold,
-      body: Center(
+      body: SafeArea(
         child: Stack(
           children: [
             ChatList(chats: _displayChats),
