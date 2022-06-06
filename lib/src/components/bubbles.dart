@@ -4,13 +4,22 @@ import 'package:intl/intl.dart';
 
 import '../models/message.dart';
 
+enum ChatMessageStatus {
+  sending,
+  sent,
+  read,
+  error,
+}
+
 class ChatMessageBubble extends StatelessWidget {
   final Message message;
+  final ChatMessageStatus? status;
   final bool showSender;
 
   const ChatMessageBubble({
     super.key,
     required this.message,
+    this.status,
     required this.showSender,
   });
 
@@ -25,7 +34,11 @@ class ChatMessageBubble extends StatelessWidget {
             padding: const EdgeInsets.only(right: 6),
             child: getUserAvatar(message.sender),
           ),
-        MessageBubble(message: message, showSender: !message.outgoing && showSender),
+        MessageBubble(
+          message: message,
+          showSender: !message.outgoing && showSender,
+          status: status,
+        ),
       ],
     );
   }
@@ -33,16 +46,34 @@ class ChatMessageBubble extends StatelessWidget {
 
 class MessageBubble extends StatelessWidget {
   final Message message;
+  final ChatMessageStatus? status;
   final bool showSender;
 
   const MessageBubble({
     Key? key,
     required this.message,
+    this.status,
     required this.showSender,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final IconData statusIcon;
+    switch (status) {
+      case ChatMessageStatus.sending:
+      case null:
+        statusIcon = Icons.schedule;
+        break;
+      case ChatMessageStatus.sent:
+        statusIcon = Icons.check;
+        break;
+      case ChatMessageStatus.read:
+        statusIcon = Icons.done_all;
+        break;
+      case ChatMessageStatus.error:
+        statusIcon = Icons.error;
+        break;
+    }
     final text = "${message.text} ";
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -112,11 +143,11 @@ class MessageBubble extends StatelessWidget {
                     textAlign: TextAlign.right,
                   ),
                   if (message.outgoing)
-                    const Padding(
-                      padding: EdgeInsets.only(left: 4),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4),
                       child: Icon(
-                        Icons.done_all,
-                        color: Colors.white,
+                        statusIcon,
+                        color: status != ChatMessageStatus.error ? Colors.white : Colors.redAccent,
                         size: 12,
                       ),
                     ),

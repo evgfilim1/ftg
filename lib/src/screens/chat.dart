@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../components/bubbles.dart';
@@ -54,8 +56,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: widget.chat.messages
                     .map((e) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                          child:
-                              ChatMessageBubble(message: e, showSender: widget.chat is GroupChat),
+                          child: ChatMessageBubble(
+                            message: e,
+                            status: ChatMessageStatus
+                                .values[Random().nextInt(ChatMessageStatus.values.length)],
+                            showSender: widget.chat is GroupChat,
+                          ),
                         ))
                     .toList(),
               ),
@@ -83,7 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       controller: _controller,
                       decoration: const InputDecoration(
-                        hintText: 'Type a message...',
+                        hintText: "Type a message...",
                         border: OutlineInputBorder(),
                       ),
                       minLines: 1,
