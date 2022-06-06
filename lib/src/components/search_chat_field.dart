@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../models/user.dart';
+import '../utils.dart';
+
 class SearchChatField extends StatelessWidget {
   final TextEditingController controller;
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -23,11 +26,7 @@ class SearchChatField extends StatelessWidget {
           suffixIcon: IconButton(
             padding: const EdgeInsets.all(6),
             splashRadius: 16,
-            icon: const CircleAvatar(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.green,
-              child: Icon(Icons.account_circle),
-            ),
+            icon: getUserAvatar(User.me),
             onPressed: () {
               scaffoldKey.currentState!.openDrawer();
             },
